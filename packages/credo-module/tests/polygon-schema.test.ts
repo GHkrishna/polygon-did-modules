@@ -96,10 +96,10 @@ describe('Polygon Module did resolver', () => {
         // Add required modules
         polygon: new PolygonModule({
           rpcUrl: 'https://rpc-amoy.polygon.technology',
-          didContractAddress: '0xC1c392DC1073a86821B4ae37f1F0faCDcFFf45bF',
+          didContractAddress: '0xcB80F37eDD2bE3570c6C9D5B0888614E04E1e49E',
           fileServerToken:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBeWFuV29ya3MiLCJpZCI6IjdmYjRmN2I3LWQ5ZWUtNDYxOC04OTE4LWZiMmIzYzY1M2EyYiJ9.x-kHeTVqX4w19ibSAspCYgIL-JFVss8yZ0CT21QVRYM',
-          schemaManagerContractAddress: '0x289c7Bd4C7d38cC54bff370d6f9f01b74Df51b11',
+          schemaManagerContractAddress: '0x4742d43C2dFCa5a1d4238240Afa8547Daf87Ee7a',
           serverUrl: 'https://51e1-103-97-166-226.ngrok-free.app',
         }),
         dids: new DidsModule({
