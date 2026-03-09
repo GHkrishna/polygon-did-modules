@@ -25,6 +25,7 @@
   },
   "scripts": {
     "build": "tsdown --config-loader unconfig",
+    "clean": "rm -rf build",
     "test": "vitest run",
     "prepublishOnly": "pnpm run build"
   },

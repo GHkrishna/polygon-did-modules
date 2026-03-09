@@ -26,6 +26,7 @@
   "scripts": {
     "compile:sol": "hardhat compile",
     "build": "tsdown --config-loader unconfig",
+    "clean": "rm -rf build",
     "deploy": "hardhat run scripts/deploy.ts --network amoy",
     "test": "pnpm compile:sol && vitest run",
     "prepublishOnly": "pnpm run build"

@@ -6,7 +6,8 @@
     "type": "git"
   },
   "scripts": {
-    "build": "pnpm -r --parallel run build",
+    "build": "pnpm -r run build",
+    "clean": "pnpm -r run clean",
     "types:check": "tsc -p tsconfig.json --noEmit",
     "style:check": "biome check --unsafe",
     "style:fix": "biome check --write --unsafe",
