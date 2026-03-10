@@ -4,22 +4,28 @@ import { Contract, JsonRpcProvider } from 'ethers'
 import { parseDid, validateDid } from './utils/did'
 
 /**
- * Resolves DID Document.
- * @param did
- * @returns Return DID Document on chain.
+ * Factory function to create a DID Resolver with custom configuration.
+ * @param rpcUrl Optional override for the RPC
+ * @param contractAddress Optional override for the Registry Address
  */
-export function getResolver(): Record<string, DIDResolver> {
+export function getResolver(rpcUrl?: string, contractAddress?: string): Record<string, DIDResolver> {
+  const _rpcUrl = rpcUrl
+  const _contractAddress = contractAddress
+
+  // The 'resolve' function now matches the DIDResolver type signature
   async function resolve(did: string): Promise<DIDResolutionResult> {
     const isValidDid = validateDid(did)
     if (!isValidDid) {
       throw new Error('invalid did provided')
     }
 
-    const parsedDid = parseDid(did)
+    // We use the overrides passed to getResolver, or fallback to parsing the DID string
+    const parsedDid = parseDid(did, { rpcUrl: _rpcUrl, contractAddress: _contractAddress })
+
     const provider = new JsonRpcProvider(parsedDid.networkUrl)
     const registry = new Contract(parsedDid.contractAddress, DidRegistryContract.abi, provider)
 
-    // Calling smart contract with getting DID Document
+    // Calling smart contract to get DID Document
     const didDocument = await registry.getDIDDoc(parsedDid.didAddress)
 
     if (!didDocument[0]) {

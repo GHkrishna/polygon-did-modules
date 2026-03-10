@@ -5,13 +5,18 @@
   "files": [
     "build"
   ],
+  "exports": {
+    "cli": "./build/index.mjs",
+    "import": "./src/index.ts"
+  },
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public",
     "types": "./build/index.d.mts",
     "module": "./build/index.mjs",
     "exports": {
-      ".": "./build/index.mjs",
+      "cli": "./build/index.mjs",
+      "import": "./src/index.ts",
       "./package.json": "./package.json"
     }
   },
@@ -24,13 +29,14 @@
   "scripts": {
     "compile:sol": "hardhat compile",
     "build": "tsdown --config-loader unconfig",
+    "clean": "rm -rf build",
     "deploy": "hardhat run scripts/deploy.ts --network amoy",
     "test": "pnpm compile:sol && vitest run",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@ayanworks/polygon-did-registry-contract": "catalog:",
-    "@ayanworks/polygon-did-resolver": "catalog:",
+    "@ayanworks/polygon-did-registry-contract": "workspace:*",
+    "@ayanworks/polygon-did-resolver": "workspace:*",
     "axios": "^1.13.5",
     "did-resolver": "catalog:",
     "ethers": "catalog:",
