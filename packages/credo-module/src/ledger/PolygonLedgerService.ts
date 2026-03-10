@@ -1,5 +1,5 @@
 import { PolygonDID } from '@ayanworks/polygon-did-registrar'
-import { PolygonSchema } from '@ayanworks/polygon-schema-manager'
+import { PolygonSchema, type EstimatedTxDetails } from '@ayanworks/polygon-schema-manager'
 import { AskarStoreManager } from '@credo-ts/askar'
 import type { AgentContext, DidDocument } from '@credo-ts/core'
 import { CredoError, DidDocumentBuilder, DidRepository, injectable, utils } from '@credo-ts/core'
@@ -133,7 +133,7 @@ export class PolygonLedgerService {
     return response
   }
 
-  public async estimateFeeForDidOperation(agentContext: AgentContext, options: DidOperationOptions) {
+  public async estimateFeeForDidOperation(agentContext: AgentContext, options: DidOperationOptions): Promise<EstimatedTxDetails | null> {
     const keyPair = await generateSecp256k1KeyPair()
 
     const didRegistry = this.createDidRegistryInstance(new SigningKey(keyPair.privateKey))
@@ -185,6 +185,8 @@ export class PolygonLedgerService {
       )
       return response
     }
+
+    return null
   }
 
   public async estimateFeeForSchemaOperation(agentContext: AgentContext, options: SchemaOperationOptions) {
