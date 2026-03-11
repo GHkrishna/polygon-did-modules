@@ -44,7 +44,7 @@ export class PolygonDidRegistrar implements DidRegistrar {
 
     // Calculate base58 public key for kid
     const signingKey = new SigningKey(privateKey)
-    const publicKeyHex = signingKey.compressedPublicKey.substring(2) // Remove '0x' prefix
+    const publicKeyHex = signingKey.publicKey.substring(2) // Remove '0x' prefix
     const publicKeyBuffer = Buffer.from(publicKeyHex, 'hex')
     const publicKeyBase58 = TypedArrayEncoder.toBase58(publicKeyBuffer)
 
@@ -103,7 +103,7 @@ export class PolygonDidRegistrar implements DidRegistrar {
     }
 
     // Import key to KMS with base58 keyId
-    const { publicKeyBase58, publicJwk } = await this.importKeyToKms(agentContext, privateKey)
+    const { publicKeyBase58, publicJwk, keyId } = await this.importKeyToKms(agentContext, privateKey)
 
     // Build DID from public key coordinates (we know it's EC with secp256k1)
     const ecPublicJwk = publicJwk as { x: string; y: string }
@@ -134,6 +134,12 @@ export class PolygonDidRegistrar implements DidRegistrar {
         did: didDocument.id,
         role: DidDocumentRole.Created,
         didDocument,
+        keys: [
+          {
+            kmsKeyId: keyId,
+            didDocumentRelativeKeyId: `${didDocument.id}#key-1`,
+          },
+        ],
       })
 
       agentContext.config.logger.info(`Saving DID record to wallet: ${did} and did document: ${didDocument}`)
