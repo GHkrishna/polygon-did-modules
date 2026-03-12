@@ -16,7 +16,6 @@ import {
   DidRepository,
   type DidUpdateOptions,
   type DidUpdateResult,
-  getEcdsaSecp256k1VerificationKey2019,
   JsonTransformer,
   TypedArrayEncoder,
 } from '@credo-ts/core'
@@ -27,6 +26,7 @@ import { Wallet as EtherWallet, JsonRpcProvider, SigningKey } from 'ethers'
 import { PolygonLedgerService } from '../ledger'
 import { PolygonModuleConfig } from '../PolygonModuleConfig'
 import { buildDid, createSecp256k1PublicJwk, getSecp256k1DidDoc, validateSpecCompliantPayload } from './didPolygonUtil'
+import { getCompressedEcdsaSecp256k1VerificationKey2019 } from '../utils'
 
 export class PolygonDidRegistrar implements DidRegistrar {
   public readonly supportedMethods = ['polygon']
@@ -44,7 +44,7 @@ export class PolygonDidRegistrar implements DidRegistrar {
 
     // Calculate base58 public key for kid
     const signingKey = new SigningKey(privateKey)
-    const publicKeyHex = signingKey.publicKey.substring(2) // Remove '0x' prefix
+    const publicKeyHex = signingKey.compressedPublicKey.substring(2) // Remove '0x' prefix
     const publicKeyBuffer = Buffer.from(publicKeyHex, 'hex')
     const publicKeyBase58 = TypedArrayEncoder.toBase58(publicKeyBuffer)
 
@@ -219,7 +219,7 @@ export class PolygonDidRegistrar implements DidRegistrar {
           const verificationMethodCount = didDocument?.verificationMethod?.length ?? 0
           const ecPublicJwk = publicJwk as { x: string; y: string }
           const secp256k1Jwk = createSecp256k1PublicJwk(ecPublicJwk)
-          const verificationMethod = getEcdsaSecp256k1VerificationKey2019({
+          const verificationMethod = getCompressedEcdsaSecp256k1VerificationKey2019({
             id: `${didDocument.id}#key-${verificationMethodCount + 1}`,
             publicJwk: secp256k1Jwk as any,
             controller: didDocument.id,
