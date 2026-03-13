@@ -6,4 +6,6 @@
 "@ayanworks/polygon-did-resolver": patch
 ---
 
-fix keyId mapping for created did and fix publish imports
+- fix keyId mapping fixed for created did
+- fix publish imports
+- use compressed base58url for verification
